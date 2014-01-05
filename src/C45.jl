@@ -16,12 +16,6 @@ module C45
 
 export DTLeaf, DTInternal
 
-
-# DTNode datatype
-# Fields:
-#	func - a pointer to the code that will be evaluated to continue down the decision tree
-#	nodes - the child nodes
-
 # abstract type for internal node use
 abstract DTNode
 
@@ -106,7 +100,7 @@ function countAppearances(a::Array, thing)
 	return count
 end
 
-# information - the rfunction to calculate the information content as per information theory
+# information - the function to calculate the information content as per information theory
 # Inputs:
 #	probabilities - the data array, should be a column vector
 # Outputs:
