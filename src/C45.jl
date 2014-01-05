@@ -41,9 +41,13 @@ type DTInternal <: DTNode
 	evl::Function # should return the index of the appropriate node given a value in the domain of the feature
 	children::Vector{DTNode}
 	
-	DTInternal() = new(EmptyNode())
+	DTInternal() = new(0,def_choice,Vector(DTNode,1))
 end
 
+
+function def_choice(array::Vector)
+	array[rand(1:length(array))]
+end
 
 # getColumn - A function to...get a column from a matrix
 # Inputs:
