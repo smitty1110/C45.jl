@@ -7,9 +7,10 @@
 # package. 
 #
 # This package is inspired by the DecisionTree.jl package, and Prof. Sean Luke's AI lectures 
-# during the 2013 Fall semester at GMU.
+# during the 2013 Fall semester at GMU. This is actually a port of my original Common Lisp
+# with extensions taken from the DecisionTree package.
 
-module C4.5
+module C45
 
 
 
@@ -32,8 +33,6 @@ end
 type DTLeaf <: DTNode
 	majority::Any
 	values:Vector
-	
-	DTLeaf() = new(EmptyNode())
 end
 
 # internal node
