@@ -14,7 +14,7 @@ module C45
 
 
 
-export DTLeaf, DTInternal
+export DTLeaf, DTInternal, information
 
 # abstract type for internal node use
 abstract DTNode
@@ -113,4 +113,15 @@ function information(probabilities::Vector)
 	return (sum * -1)
 end
 
-function gini(probabilities::Vector
+# gini - calculates the GINI coefficient for a list of probabilities
+# Inputs:
+#	probabilities - a list of probabilities, should sum to 1
+# Outputs:
+#	the gini coefficient.
+function gini(probabilities::Vector)
+	sum = 0.0
+	for p in probabilities
+		sum += p^2
+	end
+	return (1 - sum)
+end
