@@ -14,7 +14,7 @@ module C45
 
 
 
-export DTLeaf, DTInternal, information
+export DTLeaf, DTInternal, information, gini
 
 # abstract type for internal node use
 abstract DTNode
@@ -105,7 +105,7 @@ end
 #	probabilities - the data array, should be a column vector
 # Outputs:
 #	sum - the information contained in the probability distribution
-function information(probabilities::Vector)
+function information(probabilities::Array)
 	sum = 0.0
 	for i in probabilities
 		sum += (i * log_2(i))
@@ -118,10 +118,35 @@ end
 #	probabilities - a list of probabilities, should sum to 1
 # Outputs:
 #	the gini coefficient.
-function gini(probabilities::Vector)
+function gini(probabilities::Array)
 	sum = 0.0
 	for p in probabilities
 		sum += p^2
 	end
 	return (1 - sum)
+end
+
+
+#function genProbabilities(feature::Array, samples::Array)
+#	data = getColumn(samples, feature[1])
+#	if feature[2] == "discrete"
+#		vals = unique(data)
+#		probs = map(x -> countAppearance(samples, x), vals)
+#	else
+#	
+#	end
+#end
+
+function chooseFeature(features::Array, samples::Array, evl::Function = information)
+	best = Array(Any,2)
+	best[2] = 0
+	best[1] = 0
+	for f in features
+		probs = genProbabilities(f, samples)
+		if eval(evl(probs)) > best[2]
+			best[1] = f
+			best[2] = eval(vls(probs))
+		end
+	end
+	return best[1]
 end
