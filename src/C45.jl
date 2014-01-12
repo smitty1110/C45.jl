@@ -153,9 +153,9 @@ function chooseFeature(features::Array, samples::Array, evl::Function = informat
 	best[1] = 0
 	for f in features
 		probs = genProbabilities(f, samples)
-		if eval(evl(probs)) > best[2]
+		if evl(probs) > best[2]
 			best[1] = f
-			best[2] = eval(vls(probs))
+			best[2]=evl(probs)
 		end
 	end
 	return best[1]
@@ -171,7 +171,7 @@ function choosePivot(samples::Array, evl::Function=information,  labels::Array)
 	best = [NA,0]
 	for p in pivots
 		probs = genProbabilities(samples. labels)
-		res = eval(evl(probs))
+		res = evl(probs)
 		if res > best[2]
 			best[1] = p
 			best[2] = res
