@@ -12,7 +12,7 @@
 
 module C45
 
-
+using DataFrames
 
 export DTLeaf, DTInternal, information, gini
 
@@ -36,6 +36,13 @@ type DTInternal <: DTNode
 	children::Vector{DTNode}
 	
 	DTInternal() = new(0,def_choice,Vector(DTNode,1))
+end
+
+# A wrapper around DataFrame to add labels to data.
+# Note that labels can have NA as a value.
+type LabeledData
+	data::DataFrame
+	labels::Array
 end
 
 
@@ -126,12 +133,15 @@ function gini(probabilities::Array)
 	return (1 - sum)
 end
 
-
-#function genProbabilities(feature::Array, samples::Array)
+# Note that the labels NEED to be in the same order.
+#function genProbabilities(feature::Array, samples::Array, labels::Array, vals::Array=unique(samples))
 #	data = getColumn(samples, feature[1])
 #	if feature[2] == "discrete"
-#		vals = unique(data)
-#		probs = map(x -> countAppearance(samples, x), vals)
+#		counts = map(x -> countAppearance(samples, x), vals)
+		pos_counts = Array(eltype(samples), size(samples,1))
+#		for s in 1:size(samples,1)
+			
+		end
 #	else
 #	
 #	end
@@ -146,6 +156,25 @@ function chooseFeature(features::Array, samples::Array, evl::Function = informat
 		if eval(evl(probs)) > best[2]
 			best[1] = f
 			best[2] = eval(vls(probs))
+		end
+	end
+	return best[1]
+end
+
+function choosePivot(samples::Array, evl::Function=information,  labels::Array)
+	end = size(samples,1) - 1
+	pivots = Array(eltype(samples),end)
+	for i in 1:end
+		pivot[i] = (samples[i] + samples[i+1]) / 2
+	end
+	
+	best = [NA,0]
+	for p in pivots
+		probs = genProbabilities(samples. labels)
+		res = eval(evl(probs))
+		if res > best[2]
+			best[1] = p
+			best[2] = res
 		end
 	end
 	return best[1]
